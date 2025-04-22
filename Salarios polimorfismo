@@ -1,0 +1,61 @@
+# Clase base
+class Empleado:
+    def __init__(self, nombre: str, sueldo_base: float):
+        self.__nombre = nombre
+        self.__sueldo_base = sueldo_base
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @property
+    def sueldo_base(self):
+        return self.__sueldo_base
+
+    @sueldo_base.setter
+    def sueldo_base(self, valor):
+        if valor < 0:
+            raise ValueError("El sueldo base no puede ser negativo.")
+        self.__sueldo_base = valor
+
+    def calcular_salario(self):
+        raise NotImplementedError("Este método debe ser implementado en las clases hijas.")
+
+
+# Empleado fijo: sueldo mensual fijo
+class EmpleadoFijo(Empleado):
+    def calcular_salario(self):
+        return self.sueldo_base
+
+
+# Empleado por horas: se pasa horas y valor por hora
+class EmpleadoPorHoras(Empleado):
+    def __init__(self, nombre: str, sueldo_base: float, horas_trabajadas: int, valor_hora: float):
+        super().__init__(nombre, sueldo_base)
+        self.horas_trabajadas = horas_trabajadas
+        self.valor_hora = valor_hora
+
+    def calcular_salario(self):
+        return self.horas_trabajadas * self.valor_hora
+
+
+# Empleado temporal: sueldo base + bono por proyecto
+class EmpleadoTemporal(Empleado):
+    def __init__(self, nombre: str, sueldo_base: float, bono_proyecto: float):
+        super().__init__(nombre, sueldo_base)
+        self.bono_proyecto = bono_proyecto
+
+    def calcular_salario(self):
+        return self.sueldo_base + self.bono_proyecto
+
+
+# Ejemplo de uso (polimorfismo)
+if __name__ == "__main__":
+    empleados = [
+        EmpleadoFijo("Carlos", 2500),
+        EmpleadoPorHoras("Lucía", 0, horas_trabajadas=120, valor_hora=20),
+        EmpleadoTemporal("Andrés", 1800, bono_proyecto=500)
+    ]
+
+    for empleado in empleados:
+        print(f"{empleado.nombre} - Salario: ${empleado.calcular_salario():.2f}")
