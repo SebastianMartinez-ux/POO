@@ -1,0 +1,85 @@
+class Persona:
+    def __init__(self, nombre: str, edad: int, documento: str):
+        self.__nombre = nombre
+        self.__edad = None
+        self.__documento = documento
+        self.edad = edad  
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, valor):
+        self.__nombre = valor
+
+    @property
+    def edad(self):
+        return self.__edad
+
+    @edad.setter
+    def edad(self, valor):
+        if valor < 0:
+            raise ValueError("La edad no puede ser negativa.")
+        self.__edad = valor
+
+    @property
+    def documento(self):
+        return self.__documento
+
+    @documento.setter
+    def documento(self, valor):
+        self.__documento = valor
+
+
+class Paciente(Persona):
+    def __init__(self, nombre, edad, documento, diagnostico=""):
+        super().__init__(nombre, edad, documento)
+        self.__diagnostico = diagnostico
+        self.__historial = []
+
+    def agregar_historial(self, entrada: str):
+        self.__historial.append(entrada)
+
+    def ver_historial(self):
+        return self.__historial
+
+    def ver_diagnostico(self):
+        return self.__diagnostico
+
+    def _actualizar_diagnostico(self, nuevo_diagnostico: str):
+        self.__diagnostico = nuevo_diagnostico
+
+
+class Doctor(Persona):
+    def __init__(self, nombre, edad, documento, especialidad):
+        super().__init__(nombre, edad, documento)
+        self.__especialidad = especialidad
+
+    def ver_especialidad(self):
+        return self.__especialidad
+
+    def modificar_diagnostico(self, paciente, nuevo_diagnostico: str):
+        if isinstance(paciente, Paciente):
+            paciente._actualizar_diagnostico(nuevo_diagnostico)
+            return "Diagnóstico actualizado correctamente."
+        else:
+            return "Error: Solo se puede modificar el diagnóstico de un paciente."
+
+
+if __name__ == "__main__":
+    paciente = Paciente("Luis Gómez", 30, "123456789", "Gripe")
+    paciente.agregar_historial("Consulta inicial: fiebre y tos.")
+    paciente.agregar_historial("Se recetó paracetamol.")
+
+    doctor = Doctor("Dra. Martínez", 45, "987654321", "Medicina Interna")
+
+    print("Historial del paciente:", paciente.ver_historial())
+    print("Diagnóstico actual:", paciente.ver_diagnostico())
+
+    print(doctor.modificar_diagnostico(paciente, "Bronquitis"))
+    print("Nuevo diagnóstico:", paciente.ver_diagnostico())
+
+    # Ver especialidad del doctor
+    print("Especialidad del doctor:", doctor.ver_especialidad())
+
