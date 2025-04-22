@@ -1,0 +1,56 @@
+class Estudiante:
+    def __init__(self, nombre: str, codigo: str):
+        self.__nombre = None
+        self.__codigo = None
+        self.__notas = []
+
+        self.nombre = nombre      # Usamos los setters para validar
+        self.codigo = codigo
+
+    # Getter y setter para nombre
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, valor):
+        if not valor.strip():
+            raise ValueError("El nombre no puede estar vacío.")
+        self.__nombre = valor
+
+    # Getter y setter para código
+    @property
+    def codigo(self):
+        return self.__codigo
+
+    @codigo.setter
+    def codigo(self, valor):
+        if not valor.isalnum():
+            raise ValueError("El código debe ser alfanumérico.")
+        self.__codigo = valor
+
+    # Método para agregar nota
+    def agregar_nota(self, nota: float):
+        if not (0.0 <= nota <= 5.0):
+            raise ValueError("La nota debe estar entre 0.0 y 5.0.")
+        self.__notas.append(nota)
+
+    # Método para calcular el promedio
+    def calcular_promedio(self):
+        if not self.__notas:
+            return 0.0  # O podría lanzar una excepción
+        return sum(self.__notas) / len(self.__notas)
+
+    # Método para saber si aprobó
+    def es_aprobado(self):
+        return self.calcular_promedio() >= 3.0
+
+# Ejemplo de uso:
+if __name__ == "__main__":
+    estudiante = Estudiante("Juan Pérez", "A123")
+    estudiante.agregar_nota(4.0)
+    estudiante.agregar_nota(3.5)
+    estudiante.agregar_nota(2.8)
+    
+    print("Promedio:", estudiante.calcular_promedio())
+    print("¿Aprobado?:", estudiante.es_aprobado())
