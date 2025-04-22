@@ -1,0 +1,21 @@
+class Transporte:
+    def tipo_transporte(self):
+        print("Tipo de transporte genérico.")
+
+class Coche(Transporte):
+    def tipo_transporte(self):
+        print("Coche: Este es un transporte terrestre.")
+
+class Avion(Transporte):
+    def tipo_transporte(self):
+        print("Avión: Este es un transporte aéreo.")
+
+class Barco(Transporte):
+    def tipo_transporte(self):
+        print("Barco: Este es un transporte marítimo.")
+
+if __name__ == "__main__":
+    vehiculos = [Coche(), Avion(), Barco()]
+
+    for vehiculo in vehiculos:
+        vehiculo.tipo_transporte()
